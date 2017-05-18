@@ -2,29 +2,44 @@
 	<%= link_to("Add a Job", new_admin_job_path, :class => "btn btn-default") %>
 </div>
 <table class="table table-boldered">
-	<% @jobs.each do |job| %>
+	<thead>
 		<tr>
-			<td>
-				<!-- <%= render_job_status(job) %> -->
-				<% if job.is_hidden %>
-				<i class="fa fa-lock" aria-hidden="true"></i>
-				<% else %>
-				<i class="fa fa-globe" aria-hidden="true"></i>
-				<% end %>
-				<%= link_to(job.title, admin_job_path(job)) %>
-			</td>
-			<td>
-				<%= link_to("Edit", edit_admin_job_path(job)) %> | 
-				<%= link_to("Destroy", admin_job_path(job), :method => :delete, :data => { :confirm => "Are you sure?" }) %> | 
-				<% if job.is_hidden %>
-				<%= link_to("Publish", publish_admin_job_path(job), :method => :post, class: "btn btn-xs btn-default") %>
-				<% else %>
-				<%= link_to("Hide", hide_admin_job_path(job), :method => :post, class: "btn btn-xs btn-default") %>
-				<% end %>
-			</td>
-			<td>
-				<%= job.created_at %>
-			</td>
+			<td>职缺</td>
+			<td>简历数量</td>
+			<td>薪资下限</td>
+			<td>薪资上限</td>
+			<td>发布设置</td>
+			<td>发布时间</td>
 		</tr>
-	<% end %>
+	</thead>
+	<tbody>
+		<% @jobs.each do |job| %>
+			<tr>
+				<td>
+					<!-- <%= render_job_status(job) %> -->
+					<% if job.is_hidden %>
+					<i class="fa fa-lock" aria-hidden="true"></i>
+					<% else %>
+					<i class="fa fa-globe" aria-hidden="true"></i>
+					<% end %>
+					<%= link_to(job.title, admin_job_path(job)) %>
+				</td>
+				<td><%= link_to(job.resumes.count, admin_job_resumes_path(job)) %></td>
+				<td><%= job.wage_lower_bound %></td>
+				<td><%= job.wage_upper_bound %></td>
+				<td>
+					<%= link_to("Edit", edit_admin_job_path(job)) %> | 
+					<%= link_to("Destroy", admin_job_path(job), :method => :delete, :data => { :confirm => "Are you sure?" }) %> | 
+					<% if job.is_hidden %>
+					<%= link_to("Publish", publish_admin_job_path(job), :method => :post, class: "btn btn-xs btn-default") %>
+					<% else %>
+					<%= link_to("Hide", hide_admin_job_path(job), :method => :post, class: "btn btn-xs btn-default") %>
+					<% end %>
+				</td>
+				<td>
+					<%= job.created_at %>
+				</td>
+			</tr>
+		<% end %>
+	</tbody>
 </table>
